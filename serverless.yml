@@ -1,0 +1,38 @@
+service: contracker-api
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  profile: contracker
+  region: us-east-1
+  environment: ${file(env.yml):${opt:stage}}
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+functions:
+  customer:
+    handler: src/handlers/customers.customer
+    memorySize: 128
+    events:
+      - http:
+          path: customers
+          method: get
+          cors: true
+      - http:
+          path: customers
+          method: post
+          cors: true
+      - http:
+          path: customers/{id}
+          method: delete
+          cors: true
+      - http:
+          path: customers/{id}
+          method: get
+          cors: true
+      - http:
+          path: customers/{id}
+          method: patch
+          cors: true
